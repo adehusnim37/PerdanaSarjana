@@ -5,7 +5,7 @@ import {useDispatch,useSelector} from "react-redux";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
 import FormContainer from "../components/FormContainer";
-import {login} from "../actions/userActions";
+import {login,getGoogleUserInfo} from "../actions/userActions";
 
 const LoginScreen = ({location,history}) => {
     const [email, setEmail] = useState('')
@@ -22,13 +22,25 @@ const LoginScreen = ({location,history}) => {
         if(userInfo){
             history.push(redirect)
         }
-    }, [history,userInfo,redirect])
+    }, [userInfo,history,redirect])
+
+    useEffect(() => {
+        if (!userInfo) {
+            dispatch(getGoogleUserInfo());
+        }
+        // eslint-disable-next-line
+    }, []);
 
     const submitHandler = (e) => {
         e.preventDefault()
         dispatch(login(email,password))
         //DISPATCH LOGIN
     }
+
+    const signInWithGoogleHandler = (e) => {
+        e.preventDefault();
+        window.location.href = `/api/auth/google?redirect=${redirect}`;
+    };
         return (
            <FormContainer>
                <h1>sign in</h1>
@@ -44,14 +56,29 @@ const LoginScreen = ({location,history}) => {
 
                    <Form.Group controlId={password}>
                        <Form.Label> Password </Form.Label>
-                       <Form.Control type='password' placeholder='Masuukan Password' value={password}
+                       <Form.Control type='password' placeholder='Masukkan Password' value={password}
                                      onChange={(e) => setPassword(e.target.value)}>
                        </Form.Control>
                    </Form.Group>
 
-                   <Button type={"submit"} variant={"primary"}> Sign-In </Button>
+                   <Button
+                       type='submit'
+                       variant='primary'
+                       style={{ marginRight: '5px' }}
+                   >
+                       Sign In
+                   </Button>
+                   <p> Or </p>
+                   <Button
+                       type='button'
+                       variant='danger'
+                       onClick={signInWithGoogleHandler}
+                   >
+                       <i className='fab fa-google left'> Sign In With Google</i>
+                   </Button>
+
                </Form>
-               
+
                <Row className='py-3'>
                    <Col> New Costumer? {''} <Link to={redirect ? `/register?redirect=${redirect}` : '/register'}> Register</Link> </Col>
                </Row>

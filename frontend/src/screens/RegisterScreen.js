@@ -46,7 +46,7 @@ const RegisterScreen = ({location,history}) => {
 
                 <Form.Group controlId={name}>
                     <Form.Label> Nama Lengkap</Form.Label>
-                    <Form.Control type='name' placeholder='Masukkan E-Mail' value={name}
+                    <Form.Control type='name' placeholder='Masukkan Nama' value={name}
                                   onChange={(e) => setName(e.target.value)}>
                     </Form.Control>
                 </Form.Group>
@@ -67,7 +67,7 @@ const RegisterScreen = ({location,history}) => {
 
                 <Form.Group controlId={confirmPassword}>
                     <Form.Label> Konfirmasi Password </Form.Label>
-                    <Form.Control type='password' placeholder='Konfirm Password' value={confirmPassword}
+                    <Form.Control type='password' placeholder='Konfirmasi Password' value={confirmPassword}
                                   onChange={(e) => setConfirmPassword(e.target.value)}>
                     </Form.Control>
                 </Form.Group>
