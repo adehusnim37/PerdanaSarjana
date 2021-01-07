@@ -6,7 +6,6 @@ import morgan from 'morgan'
 import passport from 'passport';
 import session from 'express-session';
 
-import connectDB from "./config/db.js";
 import {notFound,errorHandler} from "./middleware/errorMiddleware.js";
 import authRoutes from "./routes/authRoutes.js";
 import passportjs from './config/passport.js'
@@ -14,7 +13,9 @@ import productRoutes from "./routes/productRoutes.js";
 import userRoutes from './routes/userRoutes.js'
 import orderRoutes from "./routes/orderRoutes.js";
 import uploadRoutes from "./routes/uploadRoutes.js";
-import midtrans from "./config/midtrans.js";
+import connectDB from "./config/db.js";
+import midTransRoutes from "./routes/midTransRoutes.js";
+
 
 dotenv.config()
 
@@ -47,12 +48,13 @@ app.use('/api/users',userRoutes)
 app.use('/api/orders', orderRoutes)
 app.use('/api/upload', uploadRoutes)
 app.use('/api/auth', authRoutes);
+app.use('/api/config/midtrans',midTransRoutes)
 
 app.get('/api/config/paypal', (req, res)  =>
     res.send(process.env.PAYPAL_CLIENT_ID)
 )
 
-app.use(snap.createTransactionToken())
+// app.use(snap.createTransactionToken())
 
 const __dirname = path.resolve()
 app.use('/uploads', express.static(path.join(__dirname, '/uploads')))

@@ -1,40 +1,52 @@
 import Order from "../models/orderModel.js";
 import User from "../models/userModel.js";
+import asyncHandler from "express-async-handler";
+import midtransclient from 'midtrans-client';
 
-const generatepaymentmidtrans = async () => {
-    const midtransclient = require('midtrans-client');
 
+const generatepaymentmidtrans = asyncHandler(async (req,res) => {
+
+    console.log(req.user)
     const snap = new midtransclient.Snap({
         isProduction: false,
         serverKey: process.env.MIDTRANS_SERVER_KEY
     })
 
-    const order = await Order
-    const user = await User
+    const order = await Order.findById(req.params.orderId)
+    console.log(order)
 
     const parameter = {
         "transaction_details": {
-            orderid: order._id,
-            grossammount: order.totalPrice
+            order_id: order._id,
+            gross_amount: parseInt(order.totalPrice)
         },
         "credit_card": {
             "secure": true
         },
         "customer_details": {
-            first_name: user.name,
-            last_name: user.name,
-            email: user.email,
+            first_name: req.user.name,
+            last_name: req.user.name,
+            email: req.user.email,
             phone: 0
         }
     };
 
-    snap.createTransaction(parameter)
-        .then((transaction) => {
-            // transaction token
-            const transactionToken = transaction.token;
-           console.log(transactionToken)
-        })
+    try{
+        snap.createTransaction(parameter)
+            .then((transaction) => {
+                // transaction token
+                const transactionToken = transaction.token;
+                res.json({transactionToken})
+            })
+    }
+    catch (e) {
+        console.log(e.message)
+        res.send("Error")
 
-}
+    }
+
+
+
+})
 
 export default generatepaymentmidtrans;
