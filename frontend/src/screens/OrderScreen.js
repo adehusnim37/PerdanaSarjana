@@ -9,6 +9,8 @@ import Loader from '../components/Loader'
 import { getOrderDetails, payOrder, deliveredOrder } from '../actions/orderActions'
 import { ORDER_PAY_RESET, ORDER_DELIVERED_RESET } from '../constants/orderConstants'
 
+
+
 const OrderScreen = ({ match,history }) => {
     const orderId = match.params.id
 
@@ -27,6 +29,10 @@ const OrderScreen = ({ match,history }) => {
 
     const userLogin = useSelector((state) => state.userLogin)
     const { userInfo } = userLogin
+
+
+
+
 
     if (!loading) {
     //   Calculate prices
@@ -55,10 +61,14 @@ const OrderScreen = ({ match,history }) => {
           }
           document.body.appendChild(script)
         }
+          const addMidtrans = async () => {
+              const {data: transactionToken} = await axios.get('/api/config/midtrans')
+              console.log(data)
+          }
 
         if (!order || successPay || successDelivered||order._id !== orderId) {
-          dispatch({ type: ORDER_PAY_RESET })
-            dispatch({ type: ORDER_DELIVERED_RESET })
+          dispatch({ type: ORDER_PAY_RESET });
+          dispatch({ type: ORDER_DELIVERED_RESET })
           dispatch(getOrderDetails(orderId))
         } else if (!order.isPaid) {
           if (!window.paypal) {
@@ -77,6 +87,8 @@ const OrderScreen = ({ match,history }) => {
     const deliveredHandler = () => {
         dispatch(deliveredOrder(order))
     }
+
+    <script type="text/javascript" src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="SB-Mid-client-kcN2h53eawqXNH4c"></script>
 
     return loading ? <Loader/> : error ? <Message variant='danger'>{error}</Message>:
         <>
@@ -183,19 +195,18 @@ const OrderScreen = ({ match,history }) => {
                                     <Col>${order.totalPrice}</Col>
                                 </Row>
                             </ListGroup.Item>
-                            {!order.isPaid && (
-                            <ListGroup.Item>
+
+                            {!order.isPaid &&
+                                (<ListGroup.Item>
                               {loadingPay && <Loader />}
-                              {!sdkReady ? (
-                                <Loader />
-                              ) : (
-                                <PayPalButton
-                                  amount={order.totalPrice}
-                                  onSuccess={successPaymentHandler}
-                                />
-                              )}
-                            </ListGroup.Item>
-                          )}
+                              {!sdkReady ? (<Loader />) :
+                                  (<PayPalButton amount={order.totalPrice} onSuccess={successPaymentHandler}/>)
+
+                              }
+                                </ListGroup.Item>)
+                            }
+
+
                             {loadingDelivered && <Loader/>}
                             {userInfo && userInfo.isAdmin && order.isPaid && !order.isDelivered && (
                                 <ListGroup.Item>

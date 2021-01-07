@@ -14,6 +14,7 @@ import productRoutes from "./routes/productRoutes.js";
 import userRoutes from './routes/userRoutes.js'
 import orderRoutes from "./routes/orderRoutes.js";
 import uploadRoutes from "./routes/uploadRoutes.js";
+import midtrans from "./config/midtrans.js";
 
 dotenv.config()
 
@@ -50,6 +51,8 @@ app.use('/api/auth', authRoutes);
 app.get('/api/config/paypal', (req, res)  =>
     res.send(process.env.PAYPAL_CLIENT_ID)
 )
+
+app.use(snap.createTransactionToken())
 
 const __dirname = path.resolve()
 app.use('/uploads', express.static(path.join(__dirname, '/uploads')))
