@@ -54,7 +54,7 @@ const OrderScreen = ({match, history}) => {
         script.setAttribute('data-client-key', 'SB-Mid-client-kcN2h53eawqXNH4c')
         script.async = true
         script.onload = () => {
-            setTimeout(() => setMidTransSDKReady(true))
+            setMidTransSDKReady(true)
         }
         document.head.appendChild(script)
     }
@@ -70,9 +70,9 @@ const OrderScreen = ({match, history}) => {
             script.type = 'text/javascript'
             script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}`
             script.async = true
-            script.onload = () => {
+            script.onload = () =>
                 setSdkReady(true)
-            }
+
             document.head.appendChild(script)
         }
 
@@ -85,7 +85,7 @@ const OrderScreen = ({match, history}) => {
                 }
             }
             const addMidtrans = async () => {
-                const {data: {transactionToken}} = await axios.get(`/api/config/midtrans/${orderId}`, config)
+                const {data:{transactionToken}} = await axios.get(`/api/config/midtrans/${orderId}`, config)
                 setMidTransToken(transactionToken)
             }
             addMidtrans()
