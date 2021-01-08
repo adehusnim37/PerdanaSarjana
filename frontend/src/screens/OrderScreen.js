@@ -227,7 +227,7 @@ const OrderScreen = ({match, history}) => {
                                 midTransToken && isMidTransSDKReady ?
                                 (
                                     <ListGroup.Item>
-                                        <button id="pay-button" onClick={()=> window.snap.pay(midTransToken)}>Pay</button>
+                                        <Button style={{backgroundColor:"lightblue", width:"100%"}} variant="light" id="pay-button" onClick={()=> window.snap.pay(midTransToken)}><img style={{width:"130px", height:'auto'}} src="https://docs.midtrans.com/asset/image/main/midtrans-logo.png"/></Button>
                                     </ListGroup.Item>
                                 ):<Loader/>
 
