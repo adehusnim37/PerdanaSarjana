@@ -4,11 +4,11 @@ const router = express.Router()
 import {protect, admins} from "../middleware/authMiddleware.js";
 import midtrans from "../config/midtrans.js";
 import Order from "../models/orderModel.js";
+import {sendMail} from "../utils/sendOrderSuccessMail.js";
 
 router.route('/:orderId').get(protect, midtrans)
-router.route('/success').post(async (req,res)=>{
+router.route('/success/').post(async (req,res)=>{
     const order = await Order.findById(req.body.order_id)
-
     if (order) {
         order.isPaid = true
         order.paidAt = Date.now()
@@ -20,11 +20,11 @@ router.route('/success').post(async (req,res)=>{
         }
 
         const updatedOrder = await order.save()
-
-        res.json(updatedOrder)
+        sendMail(updatedOrder)
+        res.status(200).json({message:"Order Success"})
     } else {
         res.status(404)
-        throw new Error('Order not found')
+        res.send({message:'error'})
     }
 })
 
