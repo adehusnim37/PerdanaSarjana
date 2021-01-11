@@ -9,7 +9,7 @@ const generatepaymentmidtrans = asyncHandler(async (req,res) => {
     console.log(req.user)
     const snap = new midtransclient.Snap({
         isProduction: false,
-        serverKey: process.env.MIDTRANS_SERVER_KEY
+        serverKey: process.env.MIDTRANS_SERVER_KEY,
     })
 
     const order = await Order.findById(req.params.orderId)
@@ -32,12 +32,9 @@ const generatepaymentmidtrans = asyncHandler(async (req,res) => {
     };
 
     try{
-        snap.createTransaction(parameter)
-            .then((transaction) => {
-                // transaction token
-                const transactionToken = transaction.token;
-                res.json({transactionToken})
-            })
+        const transaction = await snap.createTransaction(parameter)
+        const transactionToken = transaction.token;
+        res.json({transactionToken})
     }
     catch (e) {
         console.log(e.message)
