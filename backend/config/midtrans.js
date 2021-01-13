@@ -8,11 +8,10 @@ const generatepaymentmidtrans = asyncHandler(async (req, res) => {
 
     console.log(req.user)
     const snap = new midtransclient.Snap({
-<<<<<<< HEAD
         isProduction: true,
-=======
+
         isProduction: false,
->>>>>>> ddc803c2b91fe4cc02b1844027b32cd39b7a8ac9
+     ddc803c2b91fe4cc02b1844027b32cd39b7a8ac9
         serverKey: process.env.MIDTRANS_SERVER_KEY,
     })
 
