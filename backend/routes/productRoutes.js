@@ -4,7 +4,7 @@ import {getProducts,getProductbyId, deleteProduct, updateProduct, createProduct,
 import {protect, admins} from "../middleware/authMiddleware.js";
 
 router.route('/').get(getProducts).post(protect,admins,createProduct)
-router.route('/:id/reviews').post(protect,admins,createProductReview)
+router.route('/:id/reviews').post(protect,createProductReview)
 router.get('/top-produk', createTopProducts)
 router.route('/:id').get(getProductbyId).delete(protect, admins, deleteProduct).put(protect,admins,updateProduct)
 

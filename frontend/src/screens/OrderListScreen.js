@@ -5,6 +5,7 @@ import {useDispatch,useSelector} from "react-redux";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
 import {listOrders} from "../actions/orderActions";
+import moment from "moment";
 
 const OrderListScreen = ({history}) => {
     const dispatch = useDispatch()
@@ -50,13 +51,13 @@ const OrderListScreen = ({history}) => {
                                 <td>{order.createdAt.substring(0, 10)}</td>
                                 <td>RP.{order.totalPrice}</td>
                                 <td>
-                                    {order.isPaid ? (order.paidAt.substring(0,10))
+                                    {order.isPaid ? moment(order.paidAt).format("MMM Do YYYY")
                                         :(
                                             <i className='fas fa-times' style={{color: 'red'}}></i>
                                         )}
                                 </td>
                                 <td>
-                                    {order.isDelivered ? (order.paidAt.substring(0,10))
+                                    {order.isDelivered ? moment(order.paidAt).format("MMM Do YYYY")
                                         :(
                                             <i className='fas fa-times' style={{color: 'red'}}></i>
                                         )}

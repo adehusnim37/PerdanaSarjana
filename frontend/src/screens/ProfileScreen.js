@@ -7,6 +7,7 @@ import Loader from "../components/Loader";
 import {getUserDetails,updateUserDetails} from "../actions/userActions";
 import { listMyOrders } from "../actions/orderActions";
 import {USER_UPDATE_PROFILE_RESET} from "../constants/userConstants";
+import moment from 'moment'
 
 const ProfileScreen = ({location,history}) => {
     const [name, setName] = useState('')
@@ -112,13 +113,13 @@ const ProfileScreen = ({location,history}) => {
                        {orders.map(order => (
                            <tr key={order._id}>
                                <td>{order._id}</td>
-                               <td>{order.createdAt.substring(0,10)}</td>
+                               <td>{moment(order.createdAt).format("MMM Do YYYY")}</td>
                                <td>{order.totalPrice}</td>
-                               <td>{order.isPaid ? order.paidAt.substring(0,10)
+                               <td>{order.isPaid ? moment(order.paidAt).format("MMM Do YYYY")
                                    : <i className='fas fa-times' style={{color: 'red'}}></i>
                                }</td>
 
-                               <td>{order.isDelivered ? order.deliveredAt.substring(0,10)
+                               <td>{order.isDelivered ? moment(order.deliveredAt).format("MMM Do YYYY")
                                    : <i className='fas fa-times' style={{color: 'red'}}></i>
                                }</td>
 
