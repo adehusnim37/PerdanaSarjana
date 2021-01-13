@@ -24,17 +24,19 @@ const ProductsScreen = ({ history, match }) => {
     const { userInfo } = userLogin
 
     const productReviewCreate = useSelector((state) => state.productReviewCreate)
-    const { success: successProductReview, error: errorProductReview } = productReviewCreate
+    const { success: successProductReview,loading: loadingProductReview, error: errorProductReview } = productReviewCreate
 
-    useEffect( () => {
-        if(successProductReview){
-            alert('Ulasan Telah ditambahkan')
+    useEffect(() => {
+        if (successProductReview) {
             setRating(0)
             setComment('')
-            dispatch({ type: PRODUCT_CREATE_REVIEW_RESET})
         }
-        dispatch(listProductDetails(match.params.id))
-    }, [dispatch, match, successProductReview])
+        if (!product._id || product._id !== match.params.id) {
+            dispatch(listProductDetails(match.params.id))
+            dispatch({ type: PRODUCT_CREATE_REVIEW_RESET })
+        }
+    }, [dispatch, match, successProductReview,product._id])
+
 
     const addToCartHandler = () => {
         history.push(`/cart/${match.params.id}?qty=${qty}`)
@@ -135,6 +137,8 @@ const ProductsScreen = ({ history, match }) => {
                     </Col>
                 </Row>
 
+
+
                     <Row>
                         <Col md={6}>
                             <h2>Ulasan</h2>
@@ -150,6 +154,12 @@ const ProductsScreen = ({ history, match }) => {
                                 ))}
                                 <ListGroup.Item>
                                     <h2>Tulis Review</h2>
+                                    {successProductReview && (
+                                        <Message variant='success'>
+                                            Review Berhasil Ditambahkan
+                                        </Message>
+                                    )}
+                                    {loadingProductReview && <Loader />}
                                     {errorProductReview && <Message variant='danger'>{errorProductReview}</Message> }
                                     {userInfo ? (
                                             <Form onSubmit={submitHandler}>
@@ -165,9 +175,8 @@ const ProductsScreen = ({ history, match }) => {
                                                     </Form.Control>
                                                 </Form.Group>
                                                 <Form.Group controlId='comment'>
-                                                    <Form.Label>Komentar</Form.Label>
                                                     <Form.Control as='textarea' row='4' value={comment} onChange={(e) =>setComment(e.target.value)}>
-
+                                                        <Form.Label>Komentar</Form.Label>
                                                     </Form.Control>
                                                 </Form.Group>
                                                 <Button type='submit' variant='primary'>Submit</Button>
