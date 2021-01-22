@@ -1,5 +1,5 @@
 import pkg from 'passport-google-oauth20';
-import env from 'dotenv'
+import {env} from 'dotenv'
 const { Strategy: GoogleStrategy } = pkg;
 import mongoose from 'mongoose';
 
@@ -9,8 +9,8 @@ export default function (passport) {
     passport.use(
         new GoogleStrategy(
             {
-                clientID: process.env.GOOGLE_CLIENT_ID,
-                clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+                clientID: '189765069797-u5kjgomphcf0u4uobegp405ikmeilnnr.apps.googleusercontent.com',
+                clientSecret: 'QY1noYns73kSKV4150B1HKRJ',
                 callbackURL: '/api/auth/google/callback',
             },
             async (accessToken, refreshToken, profile, done) => {
