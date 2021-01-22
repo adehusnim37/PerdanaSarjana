@@ -1,7 +1,7 @@
 import express from 'express'
 const router = express.Router()
 
-import {protect, admins} from "../middleware/authMiddleware.js";
+import {protect} from "../middleware/authMiddleware.js";
 import midtrans from "../config/midtrans.js";
 import Order from "../models/orderModel.js";
 import {sendMail} from "../utils/sendOrderSuccessMail.js";

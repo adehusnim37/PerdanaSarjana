@@ -51,7 +51,7 @@ const OrderScreen = ({match, history}) => {
         const script = document.createElement('script')
         script.type = 'text/javascript'
         script.src = `https://app.midtrans.com/snap/snap.js`
-        script.setAttribute('data-client-key', 'Mid-client-Dt2T0BDImaqn956i')
+        script.setAttribute('data-client-key', 'SB-Mid-client-kcN2h53eawqXNH4c')
         script.async = true
         script.onload = () => {
             setMidTransSDKReady(true)

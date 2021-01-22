@@ -1,4 +1,5 @@
 import pkg from 'passport-google-oauth20';
+import env from 'dotenv'
 const { Strategy: GoogleStrategy } = pkg;
 import mongoose from 'mongoose';
 

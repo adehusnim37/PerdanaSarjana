@@ -10173,10 +10173,10 @@
                 <td class="list-group-item">
                     <h2>Pengiriman</h2>
                     <p>
-                        <strong>Nama : </strong> <%= order.user.name %>
+                        <strong>Nama : </strong> <%= order.users.name %>
                     </p>
                     <p>
-                        <a>Email : <%= order.user.email %></a>
+                        <a>Email : <%= order.users.email %></a>
                     </p>
                     <p>
                         <strong>Alamat : </strong>
@@ -10262,7 +10262,7 @@
             flex-grow: 1;
             max-width: 100%
 
-">$<%= order.itemsPrice %></div>
+">$<%= order.orderItems[i].price %></div>
                                     </div>
                                 </td>
 
