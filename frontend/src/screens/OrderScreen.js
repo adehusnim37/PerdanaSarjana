@@ -250,6 +250,7 @@ const OrderScreen = ({match, history}) => {
                             {loadingDelivered && <Loader/>}
                             {userInfo && userInfo.isAdmin && order.isPaid && !order.isDelivered && (
                                 <ListGroup.Item>
+                                    <Card>Kotak</Card>
                                     <Button type='Button' className='btn btn-block' onClick={deliveredHandler}>
                                         Sudah Terkirim
                                     </Button>
