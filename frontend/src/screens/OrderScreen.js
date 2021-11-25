@@ -7,8 +7,8 @@ import {useDispatch, useSelector} from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import {getOrderDetails, payOrder, deliveredOrder} from '../actions/orderActions'
-import {ORDER_PAY_RESET, ORDER_DELIVERED_RESET} from '../constants/orderConstants'
-
+import {ORDER_PAY_RESET, ORDER_DELIVERED_RESET, ORDER_DELETE_SUCCESS} from '../constants/orderConstants'
+import { cancelledOrder } from "../actions/orderActions";
 
 const OrderScreen = ({match, history}) => {
     const orderId = match.params.id
@@ -31,6 +31,14 @@ const OrderScreen = ({match, history}) => {
 
     const [midTransToken, setMidTransToken] = useState(null)
     const [isMidTransSDKReady, setMidTransSDKReady] = useState(false)
+
+    const deleteHandler = (id) => {
+        if(window.confirm('Kamu yakin cancel pesanan?')) {
+            dispatch(cancelledOrder(id))
+            window.alert('pesanan kamu telah dihapus dan dicancel.');
+            history.push('/')
+        }
+    }
 
 
     if (!loading) {
@@ -197,30 +205,39 @@ const OrderScreen = ({match, history}) => {
                             <ListGroup.Item>
                                 <Row>
                                     <Col>Harga Barang</Col>
-                                    <Col>${order.itemsPrice}</Col>
+                                    <Col>Rp.{order.itemsPrice}</Col>
                                 </Row>
                             </ListGroup.Item>
 
                             <ListGroup.Item>
                                 <Row>
                                     <Col>Pengiriman</Col>
-                                    <Col>${order.shippingPrice}</Col>
+                                    <Col>Rp.{order.shippingPrice}</Col>
                                 </Row>
                             </ListGroup.Item>
 
                             <ListGroup.Item>
                                 <Row>
                                     <Col>Biaya layanan</Col>
-                                    <Col>${order.taxPrice}</Col>
+                                    <Col>Rp.{order.taxPrice}</Col>
                                 </Row>
                             </ListGroup.Item>
 
                             <ListGroup.Item>
                                 <Row>
                                     <Col>Total</Col>
-                                    <Col>${order.totalPrice}</Col>
+                                    <Col>Rp.{order.totalPrice}</Col>
                                 </Row>
                             </ListGroup.Item>
+
+                            {!order.isPaid && (
+                                <ListGroup.Item>
+                                    <Button style={{backgroundColor: "black", width: "100%"}} onClick={() => deleteHandler(order._id)} >
+                                        Cancelled Order
+                                    </Button>
+                                </ListGroup.Item>
+                            )}
+
 
                             <div>
                                 {
@@ -229,7 +246,9 @@ const OrderScreen = ({match, history}) => {
                                         midTransToken && isMidTransSDKReady ?
                                             (
                                                 <ListGroup.Item>
-                                                    <Button style={{backgroundColor:"lightblue", width:"100%"}} variant="light" id="pay-button" onClick={()=> window.snap.pay(midTransToken)}><img style={{width:"130px", height:'auto'}} src="https://docs.midtrans.com/asset/image/main/midtrans-logo.png"/></Button>
+                                                    <Button style={{backgroundColor:"lightblue", width:"100%"}} variant="light" id="pay-button" onClick={()=> window.snap.pay(midTransToken)}>
+                                                        <img style={{width:"130px", height:'auto'}} src="https://docs.midtrans.com/asset/image/main/midtrans-logo.png" alt="midtrans"/>
+                                                    </Button>
                                                 </ListGroup.Item>
                                             ):<Loader/>
 
@@ -250,7 +269,6 @@ const OrderScreen = ({match, history}) => {
                             {loadingDelivered && <Loader/>}
                             {userInfo && userInfo.isAdmin && order.isPaid && !order.isDelivered && (
                                 <ListGroup.Item>
-                                    <Card>Kotak</Card>
                                     <Button type='Button' className='btn btn-block' onClick={deliveredHandler}>
                                         Sudah Terkirim
                                     </Button>

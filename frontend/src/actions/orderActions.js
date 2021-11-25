@@ -16,9 +16,10 @@ import {
     ORDER_LIST_FAIL,
     ORDER_DELIVERED_REQUEST,
     ORDER_DELIVERED_SUCCESS,
-    ORDER_DELIVERED_FAIL
+    ORDER_DELIVERED_FAIL, ORDER_DELETE_REQUEST, ORDER_DELETE_SUCCESS, ORDER_DELETE_FAIL
 } from "../constants/orderConstants";
 import axios from "axios";
+import {USER_DELETE_FAIL, USER_DELETE_REQUEST, USER_DELETE_SUCCESS} from "../constants/userConstants";
 
 export const createOrder = (order) => async  (dispatch,getState) => {
     try{
@@ -204,6 +205,36 @@ export const deliveredOrder = (order) => async  (dispatch,getState) => {
             payload: error.response && error.response.data.message
                 ? error.response.data.message
                 :error.message,
+        })
+    }
+}
+
+export const cancelledOrder = (id) => async (dispatch, getState) => {
+    try {
+        dispatch({
+            type: ORDER_DELETE_REQUEST,
+        })
+
+        const {
+            userLogin: { userInfo },
+        } = getState()
+
+        const config = {
+            headers: {
+                Authorization: `Bearer ${userInfo.token}`,
+            },
+        }
+
+        await axios.delete(`/api/orders/${id}`, config)
+
+        dispatch({ type: ORDER_DELETE_SUCCESS })
+    } catch (error) {
+        dispatch({
+            type: ORDER_DELETE_FAIL,
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
         })
     }
 }

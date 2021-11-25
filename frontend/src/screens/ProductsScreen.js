@@ -61,7 +61,7 @@ const ProductsScreen = ({ history, match }) => {
                     <>
                     <Row>
                     <Col md={6}>
-                        <Image src={product.image} alt={product.name} fluid></Image>
+                        <Image src={product.image} alt={product.name} fluid/>
                     </Col>
                     <Col md={3}>
                         <ListGroup variant='flush'>
@@ -75,7 +75,7 @@ const ProductsScreen = ({ history, match }) => {
                                 />
                             </ListGroupItem>
                             <ListGroupItem>
-                                Price: ${product.price}
+                                Harga: Rp.{product.price}
                             </ListGroupItem>
                             <ListGroupItem>
                                 Description: {product.description}
@@ -92,7 +92,7 @@ const ProductsScreen = ({ history, match }) => {
                                             Harga :
                                         </Col>
                                         <Col>
-                                            <strong>${product.price}</strong>
+                                            <strong>Rp.{product.price}</strong>
                                         </Col>
                                     </Row>
                                 </ListGroupItem>

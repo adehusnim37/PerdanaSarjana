@@ -110,4 +110,24 @@ const updateOrderToDelivered = asyncHandler(async (req, res) => {
     }
 })
 
-export {addOrderItems, getOrderById, updateOrderToPaid,getMyOrders, getOrders, updateOrderToDelivered}
+//desc order menjadi dibatalkan
+//@route put delete /api/orders/:id
+//@access to user only
+const orderCancelledUser = asyncHandler(async (req,res) => {
+    const order = await Order.findById(req.params.id)
+
+    if(order) {
+        order.isDelivered = false;
+        order.isPaid = false;
+
+        const cancelledOrder = await order.remove()
+
+        res.json(cancelledOrder)
+        res.json({ message: 'Order telah dicancel dan diremove' })
+    }else {
+        res.status(404)
+        throw new Error("Order kamu telah diproses dan dibayar, tidak bisa dicancel ya")
+    }
+})
+
+export {addOrderItems, getOrderById, updateOrderToPaid,getMyOrders, getOrders, updateOrderToDelivered, orderCancelledUser}

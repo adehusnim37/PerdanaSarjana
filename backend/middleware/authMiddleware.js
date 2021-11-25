@@ -36,4 +36,13 @@ const admins = (req,res,next) => {
     }
 }
 
-export {protect, admins}
+const users = (req,res,next) => {
+    if(req.user){
+        next()
+    }else {
+        res.status(401)
+        throw new Error('Kamu tidak punya akses disini ya!')
+    }
+}
+
+export {protect, admins, users}
